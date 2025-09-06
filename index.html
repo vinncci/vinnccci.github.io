@@ -26,8 +26,8 @@ body {
   overflow-x: hidden;
 }
 
-/* Two layered backgrounds for smooth cinematic fade */
-body::before, body::after {
+/* Blurred background layer */
+body::before {
   content: '';
   position: fixed;
   top: 0; left: 0;
@@ -39,10 +39,8 @@ body::before, body::after {
   filter: blur(20px) brightness(0.5);
   z-index: 0;
   pointer-events: none;
-  opacity: 0;
-  transition: opacity 1s ease-in-out;
+  transition: background-image 0.7s ease-in-out;
 }
-body::before { opacity: 1; }
 
 header {
   padding: 2rem;
@@ -75,7 +73,7 @@ iframe {
 <body>
 <header>
 <h1>🎵 v1nc1 on Spotify</h1>
-<p>Click an album to set it as the background</p>
+<p>Hover over an album to set it as the background</p>
 </header>
 
 <main>
@@ -101,7 +99,7 @@ iframe {
 </main>
 
 <script>
-// Preload all album covers for instant background display
+// Preload album covers
 const covers = [
   "images/cassette1.png",
   "images/cassette2.png",
@@ -112,37 +110,13 @@ const covers = [
 covers.forEach(src => { const img = new Image(); img.src = src; });
 
 const body = document.body;
-let showingBefore = true; // track which pseudo-element is active
 
+// Change background on hover and keep it until another hover
 document.querySelectorAll('.spotify-embed').forEach(embed => {
-  embed.addEventListener('click', e => {
-    e.stopPropagation();
+  embed.addEventListener('mouseenter', () => {
     const cover = embed.getAttribute('data-cover');
-
-    if (showingBefore) {
-      body.style.setProperty('--cover-after', `url(${cover})`);
-      body.style.setProperty('opacity-after', '1');
-      body.style.setProperty('opacity-before', '0');
-      body.style.setProperty('--after-bg', `url(${cover})`);
-      body.style.setProperty('--before-bg', `url(${cover})`);
-      body.style.setProperty('--after-opacity', '1');
-      body.style.setProperty('--before-opacity', '0');
-      document.querySelector('body::after').style.opacity = 1;
-      document.querySelector('body::before').style.opacity = 0;
-    } else {
-      document.querySelector('body::before').style.backgroundImage = `url(${cover})`;
-      document.querySelector('body::before').style.opacity = 1;
-      document.querySelector('body::after').style.opacity = 0;
-    }
-    showingBefore = !showingBefore;
+    body.style.setProperty('background-image', `url(${cover})`);
   });
-});
-
-// Reset background when clicking outside albums
-body.addEventListener('click', e => {
-  if (!e.target.closest('.spotify-embed')) {
-    document.body.style.backgroundImage = 'none';
-  }
 });
 </script>
 </body>
