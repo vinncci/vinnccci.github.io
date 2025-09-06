@@ -5,40 +5,70 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>v1nc1</title>
   <link rel="icon" type="image/png" href="spotify.png" />
+
+  <!-- Meta tags -->
   <meta property="og:title" content="v1nc1" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="http://buyfent.online" />
   <meta property="og:image" content="https://cdn.discordapp.com/attachments/1400930981136826540/1413961061920538624/merica.jpg" />
   <meta name="theme-color" content="#010101">
   <meta name="twitter:card" content="summary_large_image">
+
   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      background: #121212;
       color: #fff;
       text-align: center;
+      background: #121212;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Layered background for smooth transitions */
+    body::before, body::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       background-size: cover;
       background-position: center;
+      background-repeat: no-repeat;
       background-attachment: fixed;
-      transition: background-image 0.5s ease-in-out;
+      filter: blur(20px) brightness(0.5);
+      z-index: 0;
+      pointer-events: none;
+      transition: opacity 1s ease-in-out;
     }
+
+    body::before {
+      opacity: 1;
+    }
+    body::after {
+      opacity: 0;
+    }
+
     header {
       padding: 2rem;
       background: rgba(29,185,84,0.9);
       color: white;
+      z-index: 1;
+      position: relative;
     }
-    h1 {
-      margin: 0;
-      font-size: 2rem;
-    }
+
+    h1 { margin: 0; font-size: 2rem; }
+
     .spotify-embed {
       margin: 2rem auto;
       max-width: 600px;
       position: relative;
       cursor: pointer;
+      z-index: 1;
     }
+
     iframe {
       border-radius: 12px;
       width: 100%;
@@ -46,12 +76,18 @@
       border: none;
       pointer-events: none;
     }
+
     .overlay {
       position: absolute;
       top: 0; left: 0;
       width: 100%; height: 100%;
       background: transparent;
+      z-index: 2;
     }
+
+    /* Responsive adjustments */
+    @media (max-width: 700px) { iframe { height: 300px; } header { padding: 1.5rem; } h1 { font-size: 1.5rem; } }
+    @media (max-width: 400px) { iframe { height: 250px; } header { padding: 1rem; } h1 { font-size: 1.2rem; } }
   </style>
 </head>
 <body>
@@ -63,46 +99,68 @@
   <main>
     <!-- Album embeds -->
     <div class="spotify-embed" data-cover="images/cassette1.png">
-      <iframe src="https://open.spotify.com/embed/album/2Wv3gFOUODT9E6bsGRqAhT?utm_source=generator"
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-        loading="lazy"></iframe>
+      <iframe src="https://open.spotify.com/embed/album/2Wv3gFOUODT9E6bsGRqAhT?utm_source=generator" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
       <div class="overlay"></div>
     </div>
+
     <div class="spotify-embed" data-cover="images/cassette2.png">
-      <iframe src="https://open.spotify.com/embed/album/74ZDoQ1ekevThvr7VcVyli?utm_source=generator"
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-        loading="lazy"></iframe>
+      <iframe src="https://open.spotify.com/embed/album/74ZDoQ1ekevThvr7VcVyli?utm_source=generator" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
       <div class="overlay"></div>
     </div>
+
     <div class="spotify-embed" data-cover="images/cassette3.jpg">
-      <iframe src="https://open.spotify.com/embed/album/4e59Kx6OUrYc7TKwXNDjJ3?utm_source=generator"
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-        loading="lazy"></iframe>
+      <iframe src="https://open.spotify.com/embed/album/4e59Kx6OUrYc7TKwXNDjJ3?utm_source=generator" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
       <div class="overlay"></div>
     </div>
+
     <div class="spotify-embed" data-cover="images/cassette4.png">
-      <iframe src="https://open.spotify.com/embed/album/1r2Q8eiaM8irjhnyB6JG2Z?utm_source=generator"
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-        loading="lazy"></iframe>
+      <iframe src="https://open.spotify.com/embed/album/1r2Q8eiaM8irjhnyB6JG2Z?utm_source=generator" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
       <div class="overlay"></div>
     </div>
+
     <div class="spotify-embed" data-cover="images/cassette5.jpg">
-      <iframe src="https://open.spotify.com/embed/album/5gCQ0MzTjgdQPUAAV56wxt?utm_source=generator"
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-        loading="lazy"></iframe>
+      <iframe src="https://open.spotify.com/embed/album/5gCQ0MzTjgdQPUAAV56wxt?utm_source=generator" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
       <div class="overlay"></div>
     </div>
   </main>
 
   <script>
+    const defaultBackground = '#121212';
+    const body = document.body;
+    let showingFirst = true; // track which pseudo-element is active
+
     document.querySelectorAll('.spotify-embed').forEach(embed => {
       const overlay = embed.querySelector('.overlay');
-      overlay.addEventListener('click', () => {
+      overlay.addEventListener('click', e => {
+        e.stopPropagation();
         const cover = embed.getAttribute('data-cover');
-        document.body.style.backgroundImage = `url(${cover})`;
+
+        // Swap background layers for fade effect
+        if (showingFirst) {
+          body.style.setProperty('--bg-after', `url(${cover})`);
+          body.style.setProperty('--bg-before', `url(${cover})`);
+          document.querySelector('body::after').style.opacity = 1;
+          document.querySelector('body::before').style.opacity = 0;
+        } else {
+          body.style.setProperty('--bg-before', `url(${cover})`);
+          document.querySelector('body::before').style.opacity = 1;
+          document.querySelector('body::after').style.opacity = 0;
+        }
+        showingFirst = !showingFirst;
+
         embed.querySelector('iframe').style.pointerEvents = 'auto';
         overlay.style.display = 'none';
       });
+    });
+
+    // Reset background on click outside albums
+    body.addEventListener('click', e => {
+      if (!e.target.closest('.spotify-embed')) {
+        body.style.backgroundImage = 'none';
+        body.style.backgroundColor = defaultBackground;
+        document.querySelectorAll('.overlay').forEach(overlay => overlay.style.display = 'block');
+        document.querySelectorAll('iframe').forEach(iframe => iframe.style.pointerEvents = 'none');
+      }
     });
   </script>
 </body>
