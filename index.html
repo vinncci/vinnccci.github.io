@@ -6,7 +6,6 @@
 <title>v1nc1</title>
 <link rel="icon" type="image/png" href="spotify.png" />
 
-<!-- Meta tags -->
 <meta property="og:title" content="v1nc1" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="http://buyfent.online" />
@@ -24,14 +23,16 @@ body {
   background: #121212;
   position: relative;
   overflow-x: hidden;
+  --bg-url: none;
 }
 
-/* Background layer with blur and fade */
+/* Pseudo-element reads from CSS variable for blur + fade */
 body::before {
   content: '';
   position: fixed;
   top: 0; left: 0;
   width: 100%; height: 100%;
+  background-image: var(--bg-url);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -41,6 +42,11 @@ body::before {
   pointer-events: none;
   opacity: 0;
   transition: opacity 1s ease-in-out, background-image 0.7s ease-in-out;
+}
+
+/* Show the blurred background */
+body.show-bg::before {
+  opacity: 1;
 }
 
 header {
@@ -100,15 +106,13 @@ iframe {
 </main>
 
 <script>
-// Change background on hover with fade
+// Change blurred background on hover
 const body = document.body;
 document.querySelectorAll('.spotify-embed').forEach(embed => {
   embed.addEventListener('mouseenter', () => {
     const cover = embed.getAttribute('data-cover');
-    body.style.setProperty('background-image', `url(${cover})`);
-    body.style.setProperty('opacity', '1');
-    body.style.setProperty('--cover', `url(${cover})`);
-    body.querySelector('::before'); // forces reflow for smooth fade
+    body.style.setProperty('--bg-url', `url(${cover})`);
+    body.classList.add('show-bg'); // triggers fade
   });
 });
 
