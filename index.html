@@ -10,7 +10,7 @@
   <meta property="og:title" content="v1nc1" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="http://buyfent.online" />
-  <meta property="og:image" content="https://cdn.discordapp.com/attachments/1400930981136826540/1413961061920538624/merica.jpg?ex=68bdd55b&is=68bc83db&hm=007dd6699462c965253d57f17b63aed68c466b979459bed943ebda6a2ce80440&" />
+  <meta property="og:image" content="https://cdn.discordapp.com/attachments/1400930981136826540/1413961061920538624/merica.jpg" />
   <meta name="theme-color" content="#010101">
   <meta name="twitter:card" content="summary_large_image">
 
@@ -22,10 +22,14 @@
       background: #121212;
       color: #fff;
       text-align: center;
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      transition: background-image 0.5s ease-in-out;
     }
     header {
       padding: 2rem;
-      background: #1DB954;
+      background: rgba(29,185,84,0.9);
       color: white;
     }
     h1 {
@@ -35,6 +39,7 @@
     .spotify-embed {
       margin: 2rem auto;
       max-width: 600px;
+      cursor: pointer;
     }
     iframe {
       border-radius: 12px;
@@ -47,44 +52,46 @@
 <body>
   <header>
     <h1>🎵 v1nc1 on Spotify</h1>
-    <p>Check out my artist profile and albums below</p>
+    <p>Click an album to set it as the background</p>
   </header>
 
   <main>
-    <!-- Artist profile -->
-    <div class="spotify-embed">
-      <iframe 
-        src="https://open.spotify.com/embed/artist/2P0A9Jd5miDa56XogSZoiC?utm_source=generator"
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-        loading="lazy"></iframe>
-    </div>
-
     <!-- Album embeds -->
-    <div class="spotify-embed">
+    <div class="spotify-embed" data-cover="https://i.scdn.co/image/ab67616d0000b2737e3c29eaf0ff57a4f5f6d0d0">
       <iframe src="https://open.spotify.com/embed/album/2Wv3gFOUODT9E6bsGRqAhT?utm_source=generator"
         allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
         loading="lazy"></iframe>
     </div>
-    <div class="spotify-embed">
+    <div class="spotify-embed" data-cover="https://i.scdn.co/image/ab67616d0000b273b9e93e1fffb3a40a0d8a5375">
       <iframe src="https://open.spotify.com/embed/album/74ZDoQ1ekevThvr7VcVyli?utm_source=generator"
         allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
         loading="lazy"></iframe>
     </div>
-    <div class="spotify-embed">
+    <div class="spotify-embed" data-cover="https://i.scdn.co/image/ab67616d0000b2736eebc9cdd7f6813a4497fbc4">
       <iframe src="https://open.spotify.com/embed/album/4e59Kx6OUrYc7TKwXNDjJ3?utm_source=generator"
         allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
         loading="lazy"></iframe>
     </div>
-    <div class="spotify-embed">
+    <div class="spotify-embed" data-cover="https://i.scdn.co/image/ab67616d0000b27316d308a1f2b65a4b7fe47c20">
       <iframe src="https://open.spotify.com/embed/album/1r2Q8eiaM8irjhnyB6JG2Z?utm_source=generator"
         allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
         loading="lazy"></iframe>
     </div>
-    <div class="spotify-embed">
+    <div class="spotify-embed" data-cover="https://i.scdn.co/image/ab67616d0000b2739f741f299a26a742d01db7a4">
       <iframe src="https://open.spotify.com/embed/album/5gCQ0MzTjgdQPUAAV56wxt?utm_source=generator"
         allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
         loading="lazy"></iframe>
     </div>
   </main>
+
+  <script>
+    // Change background on album click
+    document.querySelectorAll('.spotify-embed').forEach(embed => {
+      embed.addEventListener('click', () => {
+        const cover = embed.getAttribute('data-cover');
+        document.body.style.backgroundImage = `url(${cover})`;
+      });
+    });
+  </script>
 </body>
 </html>
