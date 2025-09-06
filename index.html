@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Music on Spotify</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #121212;
+      color: #fff;
+      text-align: center;
+    }
+    header {
+      padding: 2rem;
+      background: #1DB954;
+      color: white;
+    }
+    h1 {
+      margin: 0;
+      font-size: 2rem;
+    }
+    .spotify-embed {
+      margin: 2rem auto;
+      max-width: 600px;
+    }
+    iframe {
+      border-radius: 12px;
+      width: 100%;
+      height: 400px; /* taller for artist profile */
+      border: none;
+    }
+    footer {
+      margin-top: 3rem;
+      padding: 1rem;
+      background: #1a1a1a;
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🎵 My Music on Spotify</h1>
+    <p>Listen to my latest releases below</p>
+  </header>
+
+  <main>
+    <div class="spotify-embed">
+      <iframe 
+        src="https://open.spotify.com/embed/artist/2P0A9Jd5miDa56XogSZoiC?utm_source=generator"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy"></iframe>
+    </div>
+  </main>
+
+  <footer>
+    <p>Made with ❤️ and hosted on GitHub Pages</p>
+  </footer>
+</body>
+</html>
