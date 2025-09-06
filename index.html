@@ -80,15 +80,15 @@ iframe {
 <body>
 <header>
 <h1>🎵 v1nc1 on Spotify</h1>
-<p>Check out my latest albums below</p>
+<p>Listen to my latest tracks directly here</p>
 </header>
 
 <main>
-<div class="spotify-embed" data-cover="images/cassette1.png">
+<div class="spotify-embed" data-cover="images/cassette1.jpg">
   <iframe src="https://open.spotify.com/embed/album/2Wv3gFOUODT9E6bsGRqAhT?utm_source=generator" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
 </div>
 
-<div class="spotify-embed" data-cover="images/cassette2.png">
+<div class="spotify-embed" data-cover="images/cassette2.jpg">
   <iframe src="https://open.spotify.com/embed/album/74ZDoQ1ekevThvr7VcVyli?utm_source=generator" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
 </div>
 
@@ -96,7 +96,7 @@ iframe {
   <iframe src="https://open.spotify.com/embed/album/4e59Kx6OUrYc7TKwXNDjJ3?utm_source=generator" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
 </div>
 
-<div class="spotify-embed" data-cover="images/cassette4.png">
+<div class="spotify-embed" data-cover="images/cassette4.jpg">
   <iframe src="https://open.spotify.com/embed/album/1r2Q8eiaM8irjhnyB6JG2Z?utm_source=generator" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
 </div>
 
@@ -119,10 +119,10 @@ document.querySelectorAll('.spotify-embed').forEach(embed => {
 // Preload images after page load
 window.addEventListener('load', () => {
   const covers = [
-    "images/cassette1.png",
-    "images/cassette2.png",
+    "images/cassette1.jpg",
+    "images/cassette2.jpg",
     "images/cassette3.jpg",
-    "images/cassette4.png",
+    "images/cassette4.jpg",
     "images/cassette5.jpg"
   ];
   covers.forEach(src => {
