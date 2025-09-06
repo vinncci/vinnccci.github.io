@@ -26,7 +26,7 @@ body {
   overflow-x: hidden;
 }
 
-/* Single background layer for fade and blur effect */
+/* Background layer with blur and fade */
 body::before {
   content: '';
   position: fixed;
@@ -100,31 +100,30 @@ iframe {
 </main>
 
 <script>
-// Preload album covers
-const covers = [
-  "images/cassette1.png",
-  "images/cassette2.png",
-  "images/cassette3.jpg",
-  "images/cassette4.png",
-  "images/cassette5.jpg"
-];
-covers.forEach(src => { const img = new Image(); img.src = src; });
-
-const body = document.body;
-const bgLayer = window.getComputedStyle(body, '::before');
-
 // Change background on hover with fade
+const body = document.body;
 document.querySelectorAll('.spotify-embed').forEach(embed => {
   embed.addEventListener('mouseenter', () => {
     const cover = embed.getAttribute('data-cover');
-    body.style.setProperty('--bg-url', `url(${cover})`);
-    body.style.backgroundImage = `url(${cover})`;
-    body.style.setProperty('opacity', '1');
-    // Directly update pseudo-element via CSS variable
-    body.style.setProperty('--cover', `url(${cover})`);
-    body.style.setProperty('opacity', '1');
-    body.querySelector('::before'); // forces reflow
     body.style.setProperty('background-image', `url(${cover})`);
+    body.style.setProperty('opacity', '1');
+    body.style.setProperty('--cover', `url(${cover})`);
+    body.querySelector('::before'); // forces reflow for smooth fade
+  });
+});
+
+// Preload album covers after page content has loaded
+window.addEventListener('load', () => {
+  const covers = [
+    "images/cassette1.png",
+    "images/cassette2.png",
+    "images/cassette3.jpg",
+    "images/cassette4.png",
+    "images/cassette5.jpg"
+  ];
+  covers.forEach(src => {
+    const img = new Image();
+    img.src = src;
   });
 });
 </script>
