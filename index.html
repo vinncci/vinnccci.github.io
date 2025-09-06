@@ -26,7 +26,7 @@ body {
   --bg-url: none;
 }
 
-/* Pseudo-element reads from CSS variable for blur + fade */
+/* Blurred background pseudo-element behind everything */
 body::before {
   content: '';
   position: fixed;
@@ -38,13 +38,12 @@ body::before {
   background-repeat: no-repeat;
   background-attachment: fixed;
   filter: blur(25px) brightness(0.5);
-  z-index: 0;
+  z-index: -1; /* behind header & embeds */
   pointer-events: none;
   opacity: 0;
   transition: opacity 1s ease-in-out, background-image 0.7s ease-in-out;
 }
 
-/* Show the blurred background */
 body.show-bg::before {
   opacity: 1;
 }
@@ -63,7 +62,8 @@ h1 { margin: 0; font-size: 2rem; }
   margin: 2rem auto;
   max-width: 600px;
   cursor: pointer;
-  z-index: 1;
+  z-index: 1; /* ensures embeds are above blurred background */
+  position: relative;
 }
 
 iframe {
@@ -106,17 +106,17 @@ iframe {
 </main>
 
 <script>
-// Change blurred background on hover
+// Hover changes background with fade & blur
 const body = document.body;
 document.querySelectorAll('.spotify-embed').forEach(embed => {
   embed.addEventListener('mouseenter', () => {
     const cover = embed.getAttribute('data-cover');
     body.style.setProperty('--bg-url', `url(${cover})`);
-    body.classList.add('show-bg'); // triggers fade
+    body.classList.add('show-bg');
   });
 });
 
-// Preload album covers after page content has loaded
+// Preload images after page load
 window.addEventListener('load', () => {
   const covers = [
     "images/cassette1.png",
