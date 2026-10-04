@@ -4,16 +4,15 @@ DOMAIN = "https://jerkmate.lol"
 
 # --- Look of the embed (edit these) ---
 THEME_COLOR = "#010101"
-SITE_NAME = ""          # e.g. "v1nc1" for small text above the title; "" to hide
-DESCRIPTION = ""        # e.g. "Listen on Spotify" for text under the title; "" to hide
-IMAGE = "cover"         # "cover" = the song's Spotify cover, or a repo path like "images/merica.jpg"
+SITE_NAME = ""              # e.g. "v1nc1" for small text above the title; "" to hide
+IMAGE = "cover"             # "cover" = the song's Spotify cover, or a repo path like "images/merica.jpg"
 FALLBACK_ARTIST = "v1nc1"   # used if the artist can't be found; "" for no fallback
-TITLE_FORMAT = "{title} - {artist}"   # how the card title looks when an artist is known
+DESCRIPTION_FORMAT = "{artist}"   # the small text under the title, e.g. "by {artist}"
 
 def meta(prop, content, attr="property"):
     return f'<meta {attr}="{prop}" content="{html.escape(content, quote=True)}" />'
 
-def render(title, image, page_url, target):
+def render(title, description, image, page_url, target):
     tags = [
         meta("og:type", "website"),
         meta("og:title", title),
@@ -24,8 +23,8 @@ def render(title, image, page_url, target):
     ]
     if SITE_NAME:
         tags.append(meta("og:site_name", SITE_NAME))
-    if DESCRIPTION:
-        tags.append(meta("og:description", DESCRIPTION))
+    if description:
+        tags.append(meta("og:description", description))
     return (
         '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="UTF-8" />\n'
         f"<title>{html.escape(title)}</title>\n"
@@ -80,9 +79,8 @@ def build(link):
     if not artist:
         artist = FALLBACK_ARTIST
         source = "fallback"
-    title = TITLE_FORMAT.format(title=song, artist=artist) if artist else song
+    description = DESCRIPTION_FORMAT.format(artist=artist) if artist else ""
 
-    # Folder name stays based on the song title only
     slug = slugify(song) or sid
     folder = pathlib.Path("t") / slug
     page = folder / "index.html"
@@ -94,8 +92,8 @@ def build(link):
     folder.mkdir(parents=True, exist_ok=True)
     page_url = f"{DOMAIN}/t/{slug}/"
     image = data["thumbnail_url"] if IMAGE == "cover" else f"{DOMAIN}/{IMAGE.lstrip('/')}"
-    page.write_text(render(title, image, page_url, target), encoding="utf-8")
-    print(f"{title}  [artist {source}: {artist or 'none'}]  ->  {page_url}")
+    page.write_text(render(song, description, image, page_url, target), encoding="utf-8")
+    print(f"{song} | {description}  [artist {source}]  ->  {page_url}")
 
 links = sys.argv[1:]
 if not links:
