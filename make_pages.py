@@ -1,6 +1,7 @@
 import html, json, pathlib, re, sys, unicodedata, urllib.parse, urllib.request
 
 DOMAIN = "https://jerkmate.lol"
+FOLDER = "track"
 
 # --- Look of the embed (edit these) ---
 THEME_COLOR = "#010101"
@@ -82,7 +83,7 @@ def build(link):
     description = DESCRIPTION_FORMAT.format(artist=artist) if artist else ""
 
     slug = slugify(song) or sid
-    folder = pathlib.Path("t") / slug
+    folder = pathlib.Path(FOLDER) / slug
     page = folder / "index.html"
     if page.exists() and target not in page.read_text(encoding="utf-8"):
         slug = f"{slug}-{sid[:6].lower()}"
@@ -90,7 +91,7 @@ def build(link):
         page = folder / "index.html"
 
     folder.mkdir(parents=True, exist_ok=True)
-    page_url = f"{DOMAIN}/t/{slug}/"
+    page_url = f"{DOMAIN}/{FOLDER}/{slug}/"
     image = data["thumbnail_url"] if IMAGE == "cover" else f"{DOMAIN}/{IMAGE.lstrip('/')}"
     page.write_text(render(song, description, image, page_url, target), encoding="utf-8")
     print(f"{song} | {description}  [artist {source}]  ->  {page_url}")
