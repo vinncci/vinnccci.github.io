@@ -19,6 +19,7 @@ jobs:
           python-version: "3.x"
       - run: python make_pages.py
       - run: |
+          mkdir -p t
           git config user.name "github-actions"
           git config user.email "github-actions@users.noreply.github.com"
           git add t
