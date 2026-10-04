@@ -45,7 +45,17 @@ def build(link):
     ), encoding="utf-8")
     print(f"{data['title']}  ->  {page_url}")
 
-for link in sys.argv[1:]:
+links = sys.argv[1:]
+if not links:
+    p = pathlib.Path("links.txt")
+    if p.exists():
+        links = [l.strip() for l in p.read_text(encoding="utf-8").splitlines() if l.strip()]
+    else:
+        print("links.txt not found in", pathlib.Path.cwd())
+
+print(f"Found {len(links)} link(s)")
+
+for link in links:
     try:
         build(link)
     except Exception as e:
