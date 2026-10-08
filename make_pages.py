@@ -67,6 +67,19 @@ def get_artist(target, kind):
     except Exception:
         return ""
 
+def to_bold(text):
+    out = []
+    for ch in text:
+        if "A" <= ch <= "Z":
+            out.append(chr(0x1D5D4 + ord(ch) - ord("A")))
+        elif "a" <= ch <= "z":
+            out.append(chr(0x1D5EE + ord(ch) - ord("a")))
+        elif "0" <= ch <= "9":
+            out.append(chr(0x1D7EC + ord(ch) - ord("0")))
+        else:
+            out.append(ch)
+    return "".join(out)
+
 def build(link):
     kind, sid = parse(link)
     target = f"https://open.spotify.com/{kind}/{sid}"
@@ -80,7 +93,7 @@ def build(link):
     if not artist:
         artist = FALLBACK_ARTIST
         source = "fallback"
-    description = DESCRIPTION_FORMAT.format(artist=artist) if artist else ""
+    description = DESCRIPTION_FORMAT.format(artist=to_bold(artist)) if artist else ""
 
     slug = slugify(song) or sid
     folder = pathlib.Path(FOLDER) / slug
